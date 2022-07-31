@@ -6,8 +6,7 @@ const ALPACA_BASE_URL = "https://paper-api.alpaca.markets/v2/";
 export async function alpacaApiFetch(
   context: coda.ExecutionContext,
   endpoint: string,
-  query: string,
-  options?: string[]
+  query: string
 ) {
   let invocationToken = context.invocationToken;
   let keyPlaceholder = "{{APCA-API-KEY-ID-" + invocationToken + "}}";
@@ -19,13 +18,8 @@ export async function alpacaApiFetch(
     endpoint;
   if (query)
     url += "/" + encodeURIComponent(query);
-  // Add options to it, if any
-  if (options?.length) {
-    url += "/";
-    options.forEach((option) => {
-      url += option + ",";
-    });
-  }
+  else
+    url += "?status=active";
   console.log(url);
 
   const response = await context.fetcher.fetch({
